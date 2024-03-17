@@ -66,7 +66,7 @@
 
                 <div class="tab-content" id="nav-tabContent">
                     <div class="tab-pane fade show active" id="nav-home" role="tabpanel" aria-labelledby="nav-home-tab">
-                        <div class="right-part__main-content table-content">
+                        <div class="right-part__main-content table-content" >
                             <h4 class="table-content__text">All users</h4>
                             <table class="table right-part__table">
                                 <thead>
@@ -81,175 +81,148 @@
                                     <th scope="col">Delete</th>
                                   </tr>
                                 </thead>
-                                <tbody>
-                                    <tr th:each = "user : ${users}">
-                                        <td th:text = "${user.getId()}">id</td>
-                                        <td th:text = "${user.getUsername()}">username</td>
-                                        <td th:text = "${user.getLastname()}">lastname</td>
-                                        <td th:text = "${user.getAge()}">age</td>
-                                        <td th:text = "${user.getEmail()}">email</td>
-                                        <td th:if="${user.getAuthorities() != null}">
-                                            <span th:each="role : ${user.getAuthorities()}" th:text="${#strings.substring(role.getAuthority(), 5)} + ' '" th:if="${not #lists.isEmpty(user.getAuthorities())}">
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <button type="button" class="btn btn-primary" data-toggle="modal" th:data-target="'#editModal_' + ${user.getId()}">Edit</button>
-                                        </td>
-                                        <div class="modal fade" th:id="'editModal_' + ${user.getId()}" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="editModalLabel">Edit user</h5>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <form class="form-popup__inputs" th:action="@{'/admin/' + ${user.getId()} + '/edit'}" th:method="POST" th:object="${user}">
-                                                            <div class="mb-3">
-                                                                <label for="edit_id_field" class="form-label modal_label">ID</label>
-                                                                <input type="text" th:name="id" th:value = "${user.id}" class="form-control" id="edit_id_field" readonly="readonly" aria-describedby="basic-addon3 basic-addon4">
-                                                            </div>
-
-                                                            <div class="mb-3">
-                                                                <label for="edit_username_field" class="form-label">Username</label>
-                                                                <input type="text" th:name="username" th:value = "${user.username}" class="form-control" id="edit_username_field" aria-describedby="basic-addon3 basic-addon4">
-                                                            </div>
-
-                                                            <div class="mb-3">
-                                                                <label for="edit_lastname_field" class="form-label">Lastname</label>
-                                                                <input type="text" th:name="lastname" th:value = "${user.lastname}" class="form-control" id="edit_lastname_field" aria-describedby="basic-addon3 basic-addon4">
-                                                            </div>
-
-                                                            <div class="mb-3">
-                                                                <label for="edit_age_field" class="form-label">Age</label>
-                                                                <input type="text" th:name="age" th:value = "${user.age}" class="form-control" id="edit_age_field" aria-describedby="basic-addon3 basic-addon4">
-                                                            </div>
-
-                                                            <div class="mb-3">
-                                                                <label for="edit_email_field" class="form-label">Email</label>
-                                                                <input type="text" th:name="email" th:value = "${user.email}" class="form-control" id="edit_email_field" aria-describedby="basic-addon3 basic-addon4">
-                                                            </div>
-
-                                                            <div class="mb-3">
-                                                                <label for="edit_password_field" class="form-label">Password</label>
-                                                                <input type="text" th:name="password" th:value = "${user.password}" class="form-control" id="edit_password_field" aria-describedby="basic-addon3 basic-addon4">
-                                                            </div>
-
-                                                            <div class="mb-3">
-                                                                <label for="form-select" class="form-label">Roles</label>
-                                                                <select class="form-select" name="roles">
-                                                                    <option value="1" selected>Admin</option>
-                                                                    <option value="2">User</option>
-                                                                </select>
-                                                            </div>
-
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                <button type="submit" class="btn btn-primary">Save changes</button>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    <td>
-                                        <button type="submit" class="btn btn-danger" data-toggle="modal" th:data-target="'#deleteModal_' + ${user.getId()}">Delete</button>
-                                    </td>
-                                        <div class="modal fade" th:id="'deleteModal_' + ${user.getId()}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h5 class="modal-title" id="deleteModalLabel">Delete user</h5>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                            <span aria-hidden="true">&times;</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="modal-body">
-                                                        <form class="form-popup__inputs" th:action="@{'/admin/' + ${user.getId()} + '/delete'}" th:method="POST">
-                                                            <div class="mb-3">
-                                                                <label for="delete_id_field" class="form-label modal_label">ID</label>
-                                                                <input type="text" th:name="id" th:value = "${user.id}" class="form-control" id="delete_id_field" readonly="readonly" aria-describedby="basic-addon3 basic-addon4">
-                                                            </div>
-
-                                                            <div class="mb-3">
-                                                                <label for="delete_username_field" class="form-label">Username</label>
-                                                                <input type="text" th:name="username" th:value = "${user.getUsername()}" class="form-control" id="delete_username_field" readonly="readonly" aria-describedby="basic-addon3 basic-addon4">
-                                                            </div>
-
-                                                            <div class="mb-3">
-                                                                <label for="delete_lastname_field" class="form-label">Lastname</label>
-                                                                <input type="text" th:name="lastname" th:value = "${user.getLastname()}" class="form-control" id="delete_lastname_field" readonly="readonly" aria-describedby="basic-addon3 basic-addon4">
-                                                            </div>
-
-                                                            <div class="mb-3">
-                                                                <label for="delete_age_field" class="form-label">Age</label>
-                                                                <input type="text" th:name="age" th:value = "${user.getAge()}" class="form-control" id="delete_age_field" readonly="readonly" aria-describedby="basic-addon3 basic-addon4">
-                                                            </div>
-
-                                                            <div class="mb-3">
-                                                                <label for="delete_email_field" class="form-label">Email</label>
-                                                                <input type="text" th:name="email" th:value = "${user.getEmail()}" class="form-control" id="delete_email_field" readonly="readonly" aria-describedby="basic-addon3 basic-addon4">
-                                                            </div>
-
-                                                            <div class="mb-3">
-                                                                <label for="form-select" class="form-label">Roles</label>
-                                                                <select class="form-select" readonly="readonly" name="roles">
-                                                                    <th:block th:each="role : ${user.getAuthorities()}">
-                                                                        <!-- Use th:field to bind the selected role -->
-                                                                        <option th:value="${role.getAuthority()}" th:selected="${true}">
-                                                                            <!-- Display role name -->
-                                                                            <span th:text="${#strings.substring(role.getAuthority(), 5)}"></span>
-                                                                        </option>
-                                                                    </th:block>
-                                                                </select>
-                                                            </div>
-
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                                                <button type="submit" class="btn btn-danger">Delete</button>
-                                                            </div>
-                                                        </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                  </tr>
-                                </tbody>
+                                <tbody id="userTableBody"></tbody>
                             </table>
                         </div>
                     </div>
+<!--                    edit part-->
+
+                    <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="editModalLabel">Edit user</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form class="form-popup__inputs" id="editForm">
+                                        <div class="mb-3">
+                                            <label for="editId" class="form-label modal_label">ID</label>
+                                            <input type="text" name="id" class="form-control" id="editId" readonly="readonly" aria-describedby="basic-addon3 basic-addon4">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="editUsername" class="form-label">Username</label>
+                                            <input type="text" name="username" class="form-control" id="editUsername" aria-describedby="basic-addon3 basic-addon4">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="editLastname" class="form-label">Lastname</label>
+                                            <input type="text" name="lastname" class="form-control" id="editLastname" aria-describedby="basic-addon3 basic-addon4">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="editAge" class="form-label">Age</label>
+                                            <input type="text" name="age" class="form-control" id="editAge" aria-describedby="basic-addon3 basic-addon4">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="editEmail" class="form-label">Email</label>
+                                            <input type="text" name="email" class="form-control" id="editEmail" aria-describedby="basic-addon3 basic-addon4">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="editPassword" class="form-label">Password</label>
+                                            <input type="text" name="password" class="form-control" id="editPassword" aria-describedby="basic-addon3 basic-addon4">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="editRoles" class="form-label">Roles</label>
+                                            <select class="form-select" id="editRoles" name="roles">
+                                                <option value="1" selected>User</option>
+                                                <option value="2">Admin</option>
+                                            </select>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" id="closeEdit" data-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-primary" id="saveEditBtn">Save changes</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="deleteModalLabel">Delete user</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form class="form-popup__inputs" id="deleteForm">
+                                        <div class="mb-3">
+                                            <label for="deleteId" class="form-label modal_label">ID</label>
+                                            <input type="text" name="id" class="form-control" id="deleteId" readonly="readonly" aria-describedby="basic-addon3 basic-addon4">
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="deleteUsername" class="form-label">Username</label>
+                                            <input type="text" name="username" class="form-control" id="deleteUsername" readonly="readonly" aria-describedby="basic-addon3 basic-addon4">
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="deleteLastname" class="form-label">Lastname</label>
+                                            <input type="text" name="lastname" class="form-control" id="deleteLastname" readonly="readonly" aria-describedby="basic-addon3 basic-addon4">
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="deleteAge" class="form-label">Age</label>
+                                            <input type="text" name="age" class="form-control" id="deleteAge" readonly="readonly" aria-describedby="basic-addon3 basic-addon4">
+                                        </div>
+
+                                        <div class="mb-3">
+                                            <label for="deleteEmail" class="form-label">Email</label>
+                                            <input type="text" name="email" class="form-control" id="deleteEmail" readonly="readonly" aria-describedby="basic-addon3 basic-addon4">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="deleteRoles" class="form-label">Roles</label>
+                                            <select class="form-select" id="deleteRoles" name="roles" readonly="readonly">
+                                                <option value="1" selected>User</option>
+                                                <option value="2">Admin</option>
+                                            </select>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" id="closeDelete" data-dismiss="modal">Close</button>
+                                            <button type="submit" class="btn btn-danger" id="saveDeleteBtn">Delete</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
                     <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
-                        <h4 class="table-content__text">All users</h4>
-                        <form class="form-popup__inputs" th:method = "POST" th:action="@{/admin}" th:object="${newUser}">
+                        <h4 class="table-content__text">New user</h4>
+                        <form class="form-popup__inputs" id="newUserForm">
                             <div class="mb-3">
-                                <label for="username_field" class="form-label">Username:</label>
-                                <input type="text" th:field="*{username}" class="form-control" id="username_field" aria-describedby="basic-addon3 basic-addon4">
+                                <label for="username" class="form-label">Username:</label>
+                                <input type="text" class="form-control" id="username" name="username" aria-describedby="basic-addon3 basic-addon4">
                             </div>
 
                             <div class="mb-3">
-                                <label for="lastname_field" class="form-label">Lastname:</label>
-                                <input type="text" th:field="*{lastname}" class="form-control" id="lastname_field" aria-describedby="basic-addon3 basic-addon4">
+                                <label for="lastname" class="form-label">Lastname:</label>
+                                <input type="text" class="form-control" id="lastname" name="lastname" aria-describedby="basic-addon3 basic-addon4">
                             </div>
 
                             <div class="mb-3">
-                                <label for="age_field" class="form-label">Age:</label>
-                                <input type="text" th:field="*{age}" class="form-control" id="age_field" aria-describedby="basic-addon3 basic-addon4">
+                                <label for="age" class="form-label">Age:</label>
+                                <input type="text" class="form-control" id="age" name="age" aria-describedby="basic-addon3 basic-addon4">
                             </div>
 
                             <div class="mb-3">
-                                <label for="email_field" class="form-label">Email:</label>
-                                <input type="text" th:field="*{email}" class="form-control" id="email_field" aria-describedby="basic-addon3 basic-addon4">
+                                <label for="email" class="form-label">Email:</label>
+                                <input type="text" class="form-control" id="email" name="email" aria-describedby="basic-addon3 basic-addon4">
                             </div>
 
                             <div class="mb-3">
-                                <label for="password_field" class="form-label">Password:</label>
-                                <input type="text" th:field="*{password}" class="form-control" id="password_field" aria-describedby="basic-addon3 basic-addon4">
+                                <label for="password" class="form-label">Password:</label>
+                                <input type="text" class="form-control" id="password" name="password" aria-describedby="basic-addon3 basic-addon4">
                             </div>
 
                             <div class="mb-3">
-                                <label for="form-select" class="form-label">Roles</label>
-                                <select class="form-select" id="form-select" th:field="*{roles}" name="roles">
+                                <label for="roles" class="form-label">Roles</label>
+                                <select class="form-select" id="roles" name="roles">
                                     <option value="2" selected>Admin</option>
                                     <option value="1">User</option>
                                 </select>
@@ -276,6 +249,228 @@
         function redirectToUser() {
             window.location.href = "/user";
         }
+    </script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.1/jquery.modal.min.js"></script>
+    <script>
+        function editModal(userId) {
+            $.ajax({
+                type: "GET",
+                url: `/admin/get/${userId}`,
+                success: function(user) {
+                    $('#editId').val(user.id);
+                    $('#editUsername').val(user.username);
+                    $('#editLastname').val(user.lastname);
+                    $('#editAge').val(user.age);
+                    $('#editEmail').val(user.email);
+                    $('#editPassword').val(user.password);
+                    $('#editRoles').val(user.roles[0].id);
+                }
+            })
+        }
+
+        function deleteModal(userId) {
+            $.ajax({
+                type: "GET",
+                url: `/admin/get/${userId}`,
+                success: function(user) {
+                    $('#deleteId').val(user.id);
+                    $('#deleteUsername').val(user.username);
+                    $('#deleteLastname').val(user.lastname);
+                    $('#deleteAge').val(user.age);
+                    $('#deleteEmail').val(user.email);
+                    $('#deletePassword').val(user.password);
+                    $('#deleteRoles').val(user.roles[0].id);
+                }
+            })
+        }
+
+        function refreshUserTable() {
+            $.ajax({
+                type: "GET",
+                url: "/admin/get",
+                success: function(data) {
+                    $('#userTableBody').empty(); // Clear the existing user table
+                    // Populate the user table with the updated data
+                    data.forEach(function(user) {
+                        let rolesString = '';
+                        user.roles.forEach(function(role) {
+                            rolesString += role.name.substring(5) + ' ';
+                        });
+                        $('#userTableBody').append(
+                            `<tr>
+                                <td>${user.id}</td>
+                                <td>${user.username}</td>
+                                <td>${user.lastname}</td>
+                                <td>${user.age}</td>
+                                <td>${user.email}</td>
+                                <td>${rolesString}</td>
+                                <td><button type="button" class="btn btn-primary edit-btn" data-toggle="modal" data-target="#editModal" onclick="editModal(${user.id})">Edit</button></td>
+                                <td><button type="button" class="btn btn-danger delete-btn" data-toggle="modal" data-target="#deleteModal" onclick="deleteModal(${user.id})">Delete</button></td>
+                            </tr>`
+                        );
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error fetching user data:", error);
+                }
+            });
+        }
+
+        $(document).ready(function() {
+            $.ajax({
+                type: "GET",
+                url: "/admin/get",
+                success: function(data) {
+                    $('#userTableBody').empty();
+                    data.forEach(function(user) {
+                        let rolesString = '';
+                        user.roles.forEach(function(role) {
+                            console.log(role.name);
+                            rolesString += role.name.substring(5) + ' ';
+                        })
+                        $('#userTableBody').append(
+                            `<tr>
+                                <td>${user.id}</td>
+                                <td>${user.username}</td>
+                                <td>${user.lastname}</td>
+                                <td>${user.age}</td>
+                                <td>${user.email}</td>
+                                <td>${rolesString}</td>
+                                <td><button type="button" class="btn btn-primary edit-btn" data-toggle="modal" data-target="#editModal" onclick="editModal(${user.id})">Edit</button></td>
+                                <td><button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal" onclick="deleteModal(${user.id})">Delete</button></td>
+                              </tr>`
+                        );
+                    });
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error fetching user data:", error);
+                }
+            });
+        });
+
+        $("#editForm").submit(function(event) {
+            event.preventDefault();
+            var roles = [];
+            var userId = $("#editId").val();
+            $('#editRoles option:selected').each(function() {
+                var roleId = $(this).val();
+                var roleName = $(this).text();
+                var backendName;
+                switch(roleName) {
+                    case "Admin":
+                        backendName = "ROLE_ADMIN"
+                        break;
+                    case "User":
+                        backendName = "ROLE_USER"
+                        break;
+                }
+                var role = { id: roleId, name: backendName };
+                roles.push(role);
+            });
+
+            let formData = {
+                username:$("#editUsername").val(),
+                lastname:$("#editLastname").val(),
+                age:$("#editAge").val(),
+                email:$("#editEmail").val(),
+                password:$("#editPassword").val(),
+                roles: roles
+            }
+
+            $.ajax({
+                type:"POST",
+                url: `admin/edit/${userId}`,
+                contentType:"application/json",
+                data: JSON.stringify(formData),
+                success: function() {
+                    refreshUserTable();
+                    $('#editModal').modal('hide');
+                },
+                error:function(xhr,status,error) {
+                    console.error("Error creating user:", error);
+                    console.log("XHR object:", xhr);
+                    alert("Failed creating user");
+                }
+            });
+            $('#closeEdit').click();
+        });
+
+        $("#deleteForm").submit(function(event) {
+            event.preventDefault();
+            var userId = $("#deleteId").val();
+
+            $.ajax({
+                type:"POST",
+                url: `admin/delete/${userId}`,
+                contentType:"application/json",
+                success: function() {
+                    refreshUserTable();
+                    $('#editModal').modal('hide');
+                },
+                error:function(xhr,status,error) {
+                    console.error("Error deleting user:", error);
+                    console.log("XHR object:", xhr);
+                    alert("Failed deleting user");
+                }
+            });
+            $('#closeDelete').click();
+        });
+
+
+
+
+
+
+        //код для вкладки нового юзера
+        $("#newUserForm").submit(function(event) {
+            event.preventDefault();
+            var roles = [];
+            $('#roles option:selected').each(function() {
+                var roleId = $(this).val();
+                var roleName = $(this).text();
+                var backendName;
+                switch(roleName) {
+                    case "Admin":
+                        backendName = "ROLE_ADMIN"
+                        break;
+                    case "User":
+                        backendName = "ROLE_USER"
+                        break;
+                }
+                var role = { id: roleId, name: backendName };
+                roles.push(role);
+            });
+
+            let formData = {
+                username:$("#username").val(),
+                lastname:$("#lastname").val(),
+                age:$("#age").val(),
+                email:$("#email").val(),
+                password:$("#password").val(),
+                roles: roles
+            }
+
+            $.ajax({
+                type:"POST",
+                url: "/admin/new",
+                contentType:"application/json",
+                data: JSON.stringify(formData),
+                success: function() {
+                    alert("User added")
+                    refreshUserTable();
+                },
+                error:function(xhr,status,error) {
+                    console.error("Error creating user:", error);
+                    console.log("XHR object:", xhr);
+                    alert("Failed creating user");
+                }
+            });
+        });
+
+
+
     </script>
 </body>
 </html>

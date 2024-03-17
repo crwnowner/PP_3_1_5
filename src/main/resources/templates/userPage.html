@@ -31,7 +31,7 @@
     <div class="main-content__left-part left-part">
         <div class="btn-group-vertical left-part__btns" role="group" aria-label="Vertical radio toggle button group">
             <input type="radio" class="btn-check" name="vbtn-radio" id="vbtn-radio1" autocomplete="off">
-                <label th:if = "${isAdmin}" class="btn btn-outline-primary border-0" for="vbtn-radio1"  onclick="redirectToAdimn()">Admin</label>
+                <label th:if = "${isAdmin}" class="btn btn-outline-primary border-0" for="vbtn-radio1"  onclick="redirectToAdmin()">Admin</label>
             <input type="radio" class="btn-check" name="vbtn-radio" id="vbtn-radio2" autocomplete="off" checked>
                 <label class="btn btn-outline-primary border-0" for="vbtn-radio2"  onclick="redirectToUser()">User</label>
         </div>
@@ -60,7 +60,7 @@
                             <td th:text = "${authUser.getAge()}">age</td>
                             <td th:text = "${authUser.getEmail()}">email</td>
                             <td th:if="${authUser.getAuthorities() != null}">
-                                    <span th:each="role : ${authUser.getAuthorities()}" th:text="${#strings.substring(role.getAuthority(), 5)} + ' '" th:if="${not #lists.isEmpty(user.getAuthorities())}">
+                                    <span th:each="role : ${authUser.getAuthorities()}" th:text="${#strings.substring(role.getAuthority(), 5)} + ' '" th:if="${not #lists.isEmpty(authUser.getAuthorities())}">
                                     </span>
                             </td>
                         </tr>
@@ -72,7 +72,7 @@
 </div>
 
 <script>
-    function redirectToAdimn() {
+    function redirectToAdmin() {
         window.location.href = "/admin";
     }
 

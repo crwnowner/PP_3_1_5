@@ -37,7 +37,7 @@ public class UserService implements UserDetailsService {
     }
 
     public User getById(Long id) {
-        return userRepository.getById(id);
+        return userRepository.findById(id).get();
     }
 
     public void saveUser(User user) {
